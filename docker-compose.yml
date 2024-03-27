@@ -1,0 +1,29 @@
+version: '3'
+name: reservation_service
+
+services:
+  database:
+    image: postgres:16.2
+    container_name: postgres
+    restart: unless-stopped
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: admin
+      POSTGRES_DB: stores
+
+  backend:
+    image: lamoda_tech
+    container_name: backend
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: Dockerfile.backend
+    environment:
+      - GOOSE_DRIVER=postgres
+      - GOOSE_DBSTRING=postgresql://admin:admin@127.0.0.1:8092/stores?sslmode=disable
+    depends_on:
+      - database
+    ports:
+      - 8000:8000

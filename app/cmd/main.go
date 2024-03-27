@@ -1,18 +1,13 @@
 package main
 
 import (
-	"fmt"
-	"log"
-	"net/http"
+	"github.com/Mooonsheen/lamoda_tech/app/internal/server"
+	"github.com/Mooonsheen/lamoda_tech/app/internal/server/config"
 )
 
 func main() {
-	http.HandleFunc("/", handler)
-	fmt.Println("Starting server on :10000")
-	log.Fatal(http.ListenAndServe(":10000", nil))
-}
-
-func handler(w http.ResponseWriter, r *http.Request) {
-	message := r.URL.Path[1:]
-	fmt.Fprintf(w, "Echo: %s", message)
+	cfg := new(config.Config)
+	cfg.Read()
+	server := server.NewServer(cfg)
+	server.Run()
 }

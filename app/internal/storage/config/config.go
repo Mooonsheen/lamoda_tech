@@ -17,7 +17,7 @@ type ConfigDb struct {
 }
 
 func (c *ConfigDb) Read() {
-	filename, _ := filepath.Abs("../internal/storage/config/storage_config.yaml")
+	filename, _ := filepath.Abs("../internal/storage/config/config.yml")
 	yamlFile, err := os.ReadFile(filename)
 	if err != nil {
 		fmt.Printf("can't read storage config. Error: %e", err)

@@ -6,6 +6,7 @@ import (
 	"time"
 
 	configdb "github.com/Mooonsheen/lamoda_tech/app/internal/storage/config"
+
 	"github.com/jackc/pgconn"
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/pgxpool"
@@ -20,6 +21,7 @@ type StorageClient interface {
 	Query(ctx context.Context, sql string, args ...interface{}) (pgx.Rows, error)
 	QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row
 	Begin(ctx context.Context) (pgx.Tx, error)
+	QueryFunc(ctx context.Context, sql string, args []interface{}, scans []interface{}, f func(pgx.QueryFuncRow) error) (pgconn.CommandTag, error)
 }
 
 func NewStorageClient(ctx context.Context, cfg *configdb.ConfigDb) (pool *pgxpool.Pool, err error) {
