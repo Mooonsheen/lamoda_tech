@@ -2,28 +2,49 @@ version: '3'
 name: reservation_service
 
 services:
-  database:
+  postgres_test:
     image: postgres:16.2
-    container_name: postgres
+    container_name: postgres_test
     restart: unless-stopped
+    env_file:
+      - .env
     ports:
-      - 5432:5432
+      - "${POSTGRES_PORT}:${POSTGRES_PORT}"
+    healthcheck:
+      test: [ "CMD-SHELL", "sh -c 'pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}'" ]
+      interval: 5s
+      timeout: 1s
+      retries: 5
+
+  migrations:
+    image: ghcr.io/kukymbr/goose-docker:3.19.2
+    container_name: migrations_test
+    restart: no
+    env_file:
+      - .env
+    depends_on:
+      postgres_test:
+        condition: service_healthy
     environment:
-      POSTGRES_USER: admin
-      POSTGRES_PASSWORD: admin
-      POSTGRES_DB: stores
+      - GOOSE_DRIVER=postgres
+      - GOOSE_DBSTRING=host=postgres_test port=${POSTGRES_PORT} user=${POSTGRES_USER} password=${POSTGRES_PASSWORD} dbname=${POSTGRES_DB}
+      - GOOSE_VERBOSE=true
+      - GOOSE_COMMAND=up
+      #- GOOSE_COMMAND=${GOOSE_COMMAND}
+    volumes:
+      - ./migrations:/migrations
 
   backend:
-    image: lamoda_tech
-    container_name: backend
+    image: backend_test
+    container_name: backend_test
     restart: unless-stopped
     build:
       context: ./
       dockerfile: Dockerfile.backend
-    environment:
-      - GOOSE_DRIVER=postgres
-      - GOOSE_DBSTRING=postgresql://admin:admin@127.0.0.1:8092/stores?sslmode=disable
-    depends_on:
-      - database
+    env_file:
+      - .env
     ports:
-      - 8000:8000
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    depends_on:
+      postgres_test:
+        condition: service_healthy

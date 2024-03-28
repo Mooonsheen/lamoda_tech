@@ -7,9 +7,11 @@ import (
 )
 
 type Storage interface {
-	CreateReservation(ctx context.Context, msg models.ReserveRequestMessage, uuid string) (reservedItems models.ResponseMessageAfterCreate, err error)
-	СonfirmReservation(ctx context.Context, uuid string) (status string, err error)
-	DeleteReservation(ctx context.Context, uuid string) (status string, err error)
-	GetStoreRemains(ctx context.Context, store_id string) (remains map[string]int, err error)
-	GetStoresAvailability(ctx context.Context) (availability []string, err error)
+	CreateReservation(ctx context.Context, msg models.RequestReserveMessage, uuid string) (*models.ResponseReserveCreateMessage, error)
+	CreateReservationManyStore(ctx context.Context, msg models.RequestReserveMessage, uuid string) (*models.ResponseReserveCreateMessage, error)
+	ApplyReservation(ctx context.Context, msg models.RequestReserveMessage) (*models.ResponseReserveChangeMessage, error)
+	DeleteReservation(ctx context.Context, msg models.RequestReserveMessage) (*models.ResponseReserveChangeMessage, error)
+	GetStoreRemains(ctx context.Context, store_id, currentSortType string, currentString int) (*models.StoreMessage, error)
+	GetStoresAvailability(ctx context.Context, msg models.RequestReserveMessage) error
+	GetAllAvailableStores(ctx context.Context) ([]*models.StoreMessage, error)
 }

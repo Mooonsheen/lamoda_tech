@@ -10,7 +10,6 @@ import (
 	"github.com/Mooonsheen/lamoda_tech/app/internal/storage/interfaces"
 	"github.com/Mooonsheen/lamoda_tech/app/internal/storage/postgresql"
 
-	// "github.com/Mooonsheen/lamoda_tech/app/internal/storage/postgresql"
 	"github.com/gin-gonic/gin"
 	"github.com/jackc/pgx/v4/pgxpool"
 )
@@ -28,8 +27,6 @@ func NewServer(cfg *config.Config) *Server {
 var Pool *pgxpool.Pool
 var PgClient interfaces.Storage
 
-// var InternalCache cache.Cache // разобраться с интерфейсом
-
 func (s *Server) Run() {
 	cfgDb := new(configdb.ConfigDb)
 	cfgDb.Read()
@@ -39,13 +36,13 @@ func (s *Server) Run() {
 		fmt.Println(err)
 	}
 	defer Pool.Close()
-	PgClient = postgresql.NewDatadase(Pool, Pool)
+	PgClient = postgresql.NewDatadase(Pool)
 
 	r := gin.Default()
-	r.POST("/reservation", s.handleReservation) // Создает бронь
+	r.POST("/reservation", s.handleReservation)
 	r.PATCH("/reservation", s.handleReservation)
-	r.DELETE("/reservation", s.handleReservation) // Удаляет бронь (товар забран со склада или истек ttl)
-	// r.GET("/store/{id}", s.handleGetStoreRemains)
+	r.DELETE("/reservation", s.handleReservation)
+	r.GET("/store", s.handleGetStoreRemains)
 
 	serverPath := s.cfg.Host + s.cfg.Port
 	r.Run(serverPath)

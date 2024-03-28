@@ -15,6 +15,13 @@ VALUES ('1', '1', 1000), ('1', '2', 1000), ('1', '3', 1000), ('1', '4', 1000), (
        ('3', '3', 1000), ('3', '5', 1000), ('3', '7', 1000), ('3', '9', 1000), ('3', '11', 1000),
        ('4', '1', 1000), ('4', '2', 1000);
 
+INSERT INTO reservations (uuid, client_id, store_id, item_id, amount, status)
+VALUES ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created'), 
+       ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created'), 
+       ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created'), 
+       ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created'), 
+       ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created');
+
 -- +goose StatementEnd
 
 -- +goose Down
