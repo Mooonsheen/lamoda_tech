@@ -17,11 +17,3 @@ func GenerateUUID() string {
 	fmt.Println(uuid)
 	return uuid
 }
-
-// func MakeConn(ctx context.Context) (*pgxpool.Conn, error) {
-// 	conn, err := server.Pool.Acquire(context.TODO())
-// 	if err != nil {
-// 		return nil, err
-// 	}
-// 	return conn, nil
-// }

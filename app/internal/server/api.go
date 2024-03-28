@@ -14,10 +14,6 @@ import (
 )
 
 func (s *Server) handleReservation(ctx *gin.Context) {
-	// if /*r.Header.Get(headerAccept)*/ ctx.Request.Header.Values("Conte")[] != jsonapi.MediaType {
-	// 	http.Error(w, "Unsupported Media Type", http.StatusUnsupportedMediaType)
-	// }
-
 	switch ctx.Request.Method {
 	case http.MethodPost:
 		s.handlePostReservation(ctx)

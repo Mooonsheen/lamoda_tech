@@ -16,15 +16,15 @@ VALUES ('1', '1', 1000), ('1', '2', 1000), ('1', '3', 1000), ('1', '4', 1000), (
        ('4', '1', 1000), ('4', '2', 1000);
 
 INSERT INTO reservations (uuid, client_id, store_id, item_id, amount, status)
-VALUES ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created'), 
-       ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created'), 
-       ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created'), 
-       ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created'), 
-       ('test-uuid-1', '1', '1', '1', 1, 'created'), ('test-uuid-1', '1', '1', '1', 1, 'created');
-
+VALUES ('test-uuid-1', '1', '1', '1', 10, 'created'), ('test-uuid-1', '1', '1', '2', 100, 'created'), 
+       ('test-uuid-2', '1', '1', '1', 100, 'created'), ('test-uuid-2', '1', '1', '2', 100, 'created'), 
+       ('test-uuid-3', '1', '1', '1', 111, 'applied'), ('test-uuid-3', '1', '1', '2', 111, 'applied');
 -- +goose StatementEnd
 
 -- +goose Down
 -- +goose StatementBegin
-SELECT 'down SQL query';
+DELETE FROM stores;
+DELETE FROM items;
+DELETE FROM store_item;
+DELETE FROM reservations;
 -- +goose StatementEnd
