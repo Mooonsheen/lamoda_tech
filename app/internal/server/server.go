@@ -11,7 +11,6 @@ import (
 	"github.com/Mooonsheen/lamoda_tech/app/internal/storage/postgresql"
 
 	"github.com/gin-gonic/gin"
-	"github.com/jackc/pgx/v4/pgxpool"
 )
 
 type Server struct {
@@ -24,19 +23,18 @@ func NewServer(cfg *config.Config) *Server {
 	}
 }
 
-var Pool *pgxpool.Pool
 var PgClient interfaces.Storage
 
 func (s *Server) Run() {
 	cfgDb := new(configdb.ConfigDb)
 	cfgDb.Read()
-	var err error
-	Pool, err := storage.NewStorageClient(context.TODO(), cfgDb)
+
+	pool, err := storage.NewStorageClient(context.TODO(), cfgDb)
 	if err != nil {
 		fmt.Println(err)
 	}
-	defer Pool.Close()
-	PgClient = postgresql.NewDatadase(Pool)
+	defer pool.Close()
+	PgClient = postgresql.NewDatadase(pool)
 
 	r := gin.Default()
 	r.POST("/reservation", s.handleReservation)

@@ -15,7 +15,7 @@ CREATE TABLE IF NOT EXISTS items (
 CREATE TABLE IF NOT EXISTS store_item (
   store_id     VARCHAR(10) NOT NULL,
   item_id      VARCHAR(10) NOT NULL,
-  amount       INTEGER NOT NULL,
+  amount       INTEGER NOT NULL CHECK (amount >= 0),
   CONSTRAINT fk_store_item_1
     FOREIGN KEY(store_id) 
       REFERENCES stores(id),
